@@ -71,7 +71,11 @@ class NormalizerFormatter implements FormatterInterface
         }
 
         if (is_object($data)) {
-            return sprintf("[object] (%s: %s)", get_class($data), $this->toJson($data));
+	        $str = method_exists($data, '__toString')
+			        ? (string)$data
+			        : $this->toJson($data);
+
+	        return sprintf("[object] (%s: %s)", get_class($data), $str);
         }
 
         if (is_resource($data)) {
